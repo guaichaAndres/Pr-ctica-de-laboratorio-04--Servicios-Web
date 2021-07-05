@@ -105,7 +105,7 @@ public class GestionPedidos {
                         .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
                         .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
             }else {
-                return Response.status(404).entity("La bodega mensionada no cuenta con productos").build();
+                return Response.status(404).entity("La bodega mencionada no cuenta con productos").build();
             }
 
 
