@@ -81,7 +81,9 @@ public class CrearTablas implements Serializable{
 		//Usuarios
 		ejbPersonaFacade.create(new Persona(0, "Jonathan", "Paladines", "0107137408", "Cuenca", "0998476387", "jpaladinest@est.ups.edu.ec", "jpaladines",'E','H'));
 		ejbPersonaFacade.create(new Persona(0, "Andres", "Guaicha", "0105824478", "Cuenca", "0989449535", "kguaicha@est.ups.edu.ec", "kguaicha", 'A' ,'H'));
-		ejbPersonaFacade.create(new Persona(0, "Pedro", "Perez", "1900848886", "Zamora", "0969784090", "pperez@est.ups.edu.ec", "pperez", 'C', 'H'));
+		ejbPersonaFacade.create(new Persona(0, "Pedro", "Perez", "1900848886", "Zamora", "0969784090",null, null, 'C', 'H'));
+		ejbPersonaFacade.create(new Persona(0, "Juan", "Galindo", "0301815593", "Loja", "0990050525",null, null, 'C', 'H'));
+
 		
 		//Provincias
 		Provincia prov1 = new Provincia(0, "Azuay");

@@ -39,18 +39,26 @@ public class PersonResource {
 	@POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response login(@FormParam("correo") String correo, @FormParam("contrasena") String contrasena) throws IOException {
 		persona = new Persona();
 		persona = personaFacade.verificarUsuario(correo, contrasena);
-		
+        Jsonb jsonb = JsonbBuilder.create();
+
 		if(persona != null) {
+			String ok ="Se inicio bien";
 			System.out.println("Usuario encontrado");
-			return Response.ok("Inicio de Sesion Correcto").build();
-			
+			return Response.ok(jsonb.toJson(ok))
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
+				
 		}else {
-			return Response.status(404).entity("Usuario no encontrado").build();
-			
+			return Response.status(404).entity("Usuario no encontrado")
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
+				
 		}
 		
     }
@@ -59,24 +67,33 @@ public class PersonResource {
 	@POST
     @Path("/registrar/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response register(@FormParam("cedula") String cedula, @FormParam("correo") String correo, @FormParam("contraseña") String contrasena){
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response register(@FormParam("cedula") String cedula, @FormParam("correo") String correo, @FormParam("contrasena") String contrasena){
 		persona = new Persona();
         persona = personaFacade.buscarCliente(cedula);
-        
+        Jsonb jsonb = JsonbBuilder.create();
+
         if(persona != null){
+        	System.out.println("Usuario Encontrado");
             persona.setCorreo(correo);
             persona.setContrasena(contrasena);
             persona.setEstado('H');
             try{
+    			String ok ="Se hizo bien";
+
                 personaFacade.edit(persona);
-                return Response.ok("Usuario Registrado").build();
+                return Response.ok(jsonb.toJson(ok)).
+                		header("Access-Control-Allow-Origin", "*")
+    					.header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+    					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
                 
             }catch (Exception e){
                 return Response.status(500).entity("Error al registrar usuario " + e).build();
             }
         }else{
+        	System.out.println("Usuario NO Encontrado");
             return Response.status(404).entity("Usuario no encontrado").build();
+
         }
     }
 	
@@ -84,14 +101,16 @@ public class PersonResource {
 	@PUT
     @Path("/modificar/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response update(@FormParam("cedula") String cedula, @FormParam("nombre") String nombre,
                            @FormParam("apellido") String apellido, @FormParam("direccion") String direccion, @FormParam("telefono") String telefono,
-                           @FormParam("correo") String correo, @FormParam("contraseña") String contrasena){
+                           @FormParam("correo") String correo, @FormParam("contrasena") String contrasena){
 
 		persona = new Persona();
         persona = personaFacade.buscarCliente(cedula);
-        
+        Jsonb jsonb = JsonbBuilder.create();
+		String ok ="Se hizo bien";
+
 		if(persona != null) {
 			Persona persona2 = new Persona();
 	        persona2 = personaFacade.buscarCliente(cedula);
@@ -104,7 +123,7 @@ public class PersonResource {
 	        
 			try{
                 personaFacade.edit(persona2);
-                return Response.ok("Usuario Modificado").build();
+                return Response.ok(jsonb.toJson(ok)).build();
                 
             }catch (Exception e){
                 return Response.status(500).entity("Error al modificar usuario " + e).build();
@@ -125,14 +144,15 @@ public class PersonResource {
 		
 		persona = new Persona();
         persona = personaFacade.buscarCliente(cedula);
-        
+        Jsonb jsonb = JsonbBuilder.create();
+		String ok ="Se hizo bien";
         if(persona != null){
             try{
             	Persona per = new Persona();
             	per = personaFacade.buscarCliente(cedula);
             	per.setEstado('D');
                 personaFacade.edit(per);
-                return Response.ok("Usuario Anulado").build();
+                return Response.ok(jsonb.toJson(ok)).build();
                 
             }catch (Exception e){
                 return Response.status(500).entity("Error al anular usuario " + e).build();

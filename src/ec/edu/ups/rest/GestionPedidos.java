@@ -28,6 +28,8 @@ import javax.ws.rs.core.Response;
 import javax.ejb.EJB;
 
 import ec.edu.ups.modelo.Categoria;
+import ec.edu.ups.modelo.FacturaCabecera;
+import ec.edu.ups.modelo.FacturaDetalle;
 import ec.edu.ups.modelo.PedidoCabecera;
 import ec.edu.ups.modelo.PedidoDetalle;
 import ec.edu.ups.modelo.Persona;
@@ -123,11 +125,13 @@ public class GestionPedidos {
     public Response estadoPedidos(@PathParam("cedula") String cedula) {
         try {
             List<PedidoCabecera> pc;
+            List<FacturaCabecera> fac;
             Persona cli = personaFacade.buscarCliente(cedula);
 
             Jsonb jsonb = JsonbBuilder.create();
 
             pc = cli.getPedidosCab();
+            fac = cli.getFacturasCab(); 
 
             if(pc.size()!=0) {
 
@@ -140,6 +144,9 @@ public class GestionPedidos {
                     }
                     pc.get(i).setProductos(productos);
                     pc.get(i).setCedula(cedula);
+                    pc.get(i).setTotal(fac.get(i).getTotal());
+                    pc.get(i).setSubtotal(fac.get(i).getSubtotal());
+                    pc.get(i).setIva(fac.get(i).getIva());
                 }
 
                 return Response.ok(jsonb.toJson(pc)).build();
@@ -192,6 +199,8 @@ public class GestionPedidos {
             return Response.status(404).entity("No se pudo encontrar un producto").build();
         }
     }
+	
+	
 	
 	
 	

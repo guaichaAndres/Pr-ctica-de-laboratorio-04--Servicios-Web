@@ -35,9 +35,19 @@ public class PedidoCabecera implements Serializable {
     @Transient
     @JsonbProperty(nillable = true)
     private String cedula;
+    @Transient
+    @JsonbProperty(nillable = true)
+    private float total;
+    @Transient
+    @JsonbProperty(nillable = true)
+    private float subtotal;
+    @Transient
+    @JsonbProperty(nillable = true)
+    private float iva;
+   
 
 
-    @ManyToOne
+	@ManyToOne
     @JoinColumn
     @JsonbTransient
     private Persona persona;
@@ -124,5 +134,33 @@ public class PedidoCabecera implements Serializable {
 	public void setCedula(String cedula) {
 		this.cedula = cedula;
 	}
-   
+	 public float getTotal() {
+			return total;
+		}
+
+
+		public void setTotal(float total) {
+			this.total = total;
+		}
+
+
+		public float getSubtotal() {
+			return subtotal;
+		}
+
+
+		public void setSubtotal(float subtotal) {
+			this.subtotal = subtotal;
+		}
+
+
+		public float getIva() {
+			return iva;
+		}
+
+
+		public void setIva(float iva) {
+			this.iva = iva;
+		}
+		
 }
